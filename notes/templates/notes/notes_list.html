@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="my-5">These are the notes:</h1>
+    {% for note in notes %}
+    <div class="row row-cols3 g2">
+        <div class="col">
+            <div class="p-3 border">
+                <h3>{{note.title}}</h3>
+                {{note.text|truncatechars:10}}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+      
+{% endblock %}
