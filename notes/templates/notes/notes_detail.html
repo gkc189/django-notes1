@@ -2,11 +2,27 @@
 
 {% block content %}
 <div class="border round">
-    <h1 class="my-5">{{note.title}}</h1>
+    <h1 class="my-5">{{note.title}} {% if note.public %}<span class="badge bg-secondary">Public</span> {% endif %}</h1>
     <p>{{note.text}}</p>
 
     <p>{{note.likes}} likes</p>
-    <a href="{% url 'notes.add_like' pk=note.id %}" class="btn btn-secondary my-5">Upvote</a>
+    <form method="post" class="d-inline" action="{% url 'notes.add_like' pk=note.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-secondary my-5" type="submit">Upvote</button>
+    </form>
+    <form method="post" class="d-inline" action="{% url 'notes.change_visibility' pk=note.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-secondary my-5" type="submit">
+            {% if note.public %}
+            Make private
+            {% else %}
+            Make public
+            {% endif %}
+        </button>
+    </form>
+    
     <a href="{% url 'notes.list' %}" class="btn btn-secondary my-5">Back</a>
     <a href="{% url 'notes.update' pk=note.id %}" class="btn btn-secondary">Edit</a>
     <a href="{% url 'notes.delete' pk=note.id %}" class="btn btn-danger">Delete</a>
